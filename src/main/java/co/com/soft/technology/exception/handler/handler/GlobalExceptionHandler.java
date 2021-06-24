@@ -28,7 +28,16 @@ public class GlobalExceptionHandler {
 		Response error = new Response();
 
 		error.setDate(new Date());
-		error.setMessage(String.format("Header requerido no especificado, por favor verificar: %s", ex.getMessage()));
+
+		// Agregar error
+		if ((ex.getCause() != null) && (ex.getCause().getLocalizedMessage() != null)) {
+			error.setMessage(ex.getCause().getLocalizedMessage());
+		} else if (!ex.getMessage().isBlank()) {
+			error.setMessage(ex.getMessage());
+		} else {
+			error.setMessage("Header requerido no especificado, por favor verificar");
+		}
+
 		error.setResponseCode(HttpStatus.BAD_REQUEST);
 		error.setTransactionId(tracer.currentSpan().context().traceIdString());
 
@@ -41,8 +50,16 @@ public class GlobalExceptionHandler {
 		Response error = new Response();
 
 		error.setDate(new Date());
-		error.setMessage(
-				String.format("Parámetro requerido no especificado, por favor verificar: %s", ex.getMessage()));
+
+		// Agregar error
+		if ((ex.getCause() != null) && (ex.getCause().getLocalizedMessage() != null)) {
+			error.setMessage(ex.getCause().getLocalizedMessage());
+		} else if (!ex.getMessage().isBlank()) {
+			error.setMessage(ex.getMessage());
+		} else {
+			error.setMessage("Parámetro requerido no especificado, por favor verificar");
+		}
+
 		error.setResponseCode(HttpStatus.BAD_REQUEST);
 		error.setTransactionId(tracer.currentSpan().context().traceIdString());
 
@@ -54,9 +71,16 @@ public class GlobalExceptionHandler {
 
 		Response error = new Response();
 
+		// Agregar error
+		if ((ex.getCause() != null) && (ex.getCause().getLocalizedMessage() != null)) {
+			error.setMessage(ex.getCause().getLocalizedMessage());
+		} else if (!ex.getMessage().isBlank()) {
+			error.setMessage(ex.getMessage());
+		} else {
+			error.setMessage("Cuerpo de la petición con formato incorrecto, por favor verificar");
+		}
+
 		error.setDate(new Date());
-		error.setMessage(String.format("Cuerpo de la petición con formato incorrecto, por favor verificar: %s",
-				ex.getMessage()));
 		error.setResponseCode(HttpStatus.BAD_REQUEST);
 		error.setTransactionId(tracer.currentSpan().context().traceIdString());
 
@@ -68,8 +92,16 @@ public class GlobalExceptionHandler {
 
 		Response error = new Response();
 
+		// Agregar error
+		if ((ex.getCause() != null) && (ex.getCause().getLocalizedMessage() != null)) {
+			error.setMessage(ex.getCause().getLocalizedMessage());
+		} else if ((ex.getMessage() != null)) {
+			error.setMessage(ex.getMessage());
+		} else {
+			error.setMessage("Parámetro con formato incorrecto, por favor verificar");
+		}
+
 		error.setDate(new Date());
-		error.setMessage(String.format("Parámetro con formato incorrecto, por favor verificar: %s", ex.getMessage()));
 		error.setResponseCode(HttpStatus.BAD_REQUEST);
 		error.setTransactionId(tracer.currentSpan().context().traceIdString());
 
@@ -82,9 +114,16 @@ public class GlobalExceptionHandler {
 
 		Response error = new Response();
 
+		// Agregar error
+		if ((ex != null) && (ex.getCause() != null) && (ex.getCause().getLocalizedMessage() != null)) {
+			error.setMessage(ex.getCause().getLocalizedMessage());
+		} else if ((ex != null) && (ex.getMessage() != null)) {
+			error.setMessage(ex.getMessage());
+		} else {
+			error.setMessage("Cuerpo de la petición con formato incorrecto, por favor verificar");
+		}
+
 		error.setDate(new Date());
-		error.setMessage(String.format("Cuerpo de la petición con formato incorrecto, por favor verificar: %s",
-				ex.getMessage()));
 		error.setResponseCode(HttpStatus.BAD_REQUEST);
 		error.setTransactionId(tracer.currentSpan().context().traceIdString());
 
@@ -97,12 +136,13 @@ public class GlobalExceptionHandler {
 
 		Response error = new Response();
 
-		if (ex != null) {
-			if ((ex.getCause() != null) && (ex.getCause().getMessage() != null)) {
-				error.setMessage(ex.getCause().getMessage());
-			} else {
-				error.setMessage(ex.getMessage());
-			}
+		// Agregar error
+		if ((ex.getCause() != null) && (ex.getCause().getLocalizedMessage() != null)) {
+			error.setMessage(ex.getCause().getLocalizedMessage());
+		} else if ((ex.getMessage() != null) && !ex.getMessage().isBlank()) {
+			error.setMessage(ex.getMessage());
+		} else {
+			error.setMessage("Error no controlado");
 		}
 
 		error.setDate(new Date());

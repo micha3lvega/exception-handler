@@ -24,15 +24,16 @@ public class BadRequestExceptionHandler {
 		Response response = new Response();
 
 		response.setDate(new Date());
-		response.setMessage(ex.getMessage());
 		response.setResponseCode(HttpStatus.BAD_REQUEST);
 		response.setTransactionId(tracer.currentSpan().context().traceIdString());
 
 		// Agregar error
 		if ((ex.getCause() != null) && (ex.getCause().getLocalizedMessage() != null)) {
 			response.setMessage(ex.getCause().getLocalizedMessage());
-		}else {
+		}else if ((ex.getMessage() != null) && !ex.getMessage().isBlank()) {
 			response.setMessage(ex.getMessage());
+		}else{
+			response.setMessage("Error en el request");
 		}
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);

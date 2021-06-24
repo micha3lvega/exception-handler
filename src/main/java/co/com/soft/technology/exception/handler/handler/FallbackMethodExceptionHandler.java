@@ -31,8 +31,10 @@ public class FallbackMethodExceptionHandler {
 		// Agregar error
 		if ((ex.getCause() != null) && (ex.getCause().getLocalizedMessage() != null)) {
 			response.setMessage(ex.getCause().getLocalizedMessage());
-		}else {
+		}else if ((ex.getMessage() != null) && !ex.getMessage().isBlank()) {
 			response.setMessage(ex.getMessage());
+		}else{
+			response.setMessage("Error al llamar el metodo de respaldo");
 		}
 
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);

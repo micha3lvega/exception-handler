@@ -31,8 +31,10 @@ public class BusinessExceptionHandler {
 		// Agregar error
 		if ((ex.getCause() != null) && (ex.getCause().getLocalizedMessage() != null)) {
 			response.setMessage(ex.getCause().getLocalizedMessage());
-		}else {
+		}else if ((ex.getMessage() != null) && !ex.getMessage().isBlank()) {
 			response.setMessage(ex.getMessage());
+		}else{
+			response.setMessage("Error al validar una regla de negocio");
 		}
 
 		return new ResponseEntity<>(response, HttpStatus.PRECONDITION_FAILED);
